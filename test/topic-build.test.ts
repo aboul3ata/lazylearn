@@ -43,6 +43,8 @@ describe('topic build and refresh', () => {
     expect(fs.lstatSync(result.installedHosts.codex!).isSymbolicLink()).toBe(true);
     expect(fs.existsSync(path.join(result.topicRoot, 'hosts', 'codex', 'lazylearn-seo', 'agents', 'openai.yaml'))).toBe(true);
     expect(fs.lstatSync(path.join(tempRoot, '.agents', 'skills', 'lazylearn-seo')).isDirectory()).toBe(true);
+    expect(fs.readFileSync(path.join(tempRoot, '.agents', 'skills', 'lazylearn-seo', 'agents', 'openai.yaml'), 'utf8')).toContain('display_name: "lazylearn-seo"');
+    expect(fs.readFileSync(path.join(tempRoot, '.agents', 'skills', 'lazylearn-seo', 'SKILL.md'), 'utf8')).toContain('# lazylearn-seo');
   });
 
   test('skips stale refresh when topic is still fresh', async () => {

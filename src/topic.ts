@@ -219,7 +219,7 @@ description: |
   ${displayName} playbook, reference notes, and source inventory applied.
 ---
 
-# ${displayName}
+# ${skillName}
 
 ## Auto-refresh
 
@@ -252,7 +252,7 @@ ${starterPrompts.length > 0 ? starterPrompts.map(item => `- ${item}`).join('\n')
 
 function renderOpenAiYaml(skillName: string, displayName: string, description: string): string {
   return `interface:
-  display_name: "${displayName}"
+  display_name: "${skillName}"
   short_description: "${truncate(description, 64)}"
   default_prompt: "Use $${skillName} to answer a ${displayName} question with the saved domain playbook."
 
