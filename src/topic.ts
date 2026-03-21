@@ -176,7 +176,7 @@ function domainGuideMarkdown(manifest: TopicManifest): string {
   for (const section of manifest.sections || []) {
     lines.push(`## ${section.title}`);
     lines.push('');
-    lines.push(section.body.trim());
+    lines.push(section.body.replace(/\\n/g, '\n').trim());
     lines.push('');
   }
 

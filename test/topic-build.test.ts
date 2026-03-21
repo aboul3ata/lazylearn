@@ -60,4 +60,24 @@ describe('topic build and refresh', () => {
     expect(refreshed.skippedRefresh).toBeFalsy();
     expect(refreshed.manifest.refresh?.lastRefreshedAt).not.toBe('2000-01-01T00:00:00.000Z');
   });
+
+  test('renders escaped newlines in section bodies as real newlines in the domain guide', async () => {
+    const manifestPath = path.join(tempRoot, 'topic.json');
+    fs.writeFileSync(manifestPath, JSON.stringify({
+      schemaVersion: 1,
+      topic: 'SEO',
+      description: 'Test topic.',
+      sections: [
+        {
+          title: 'Checklist',
+          body: '1. First\\n2. Second',
+        },
+      ],
+    }, null, 2));
+
+    const built = await buildTopicPackFromManifestFile(manifestPath, { host: 'auto', install: true });
+    const guide = fs.readFileSync(path.join(built.topicRoot, 'references', 'domain-guide.md'), 'utf8');
+    expect(guide.includes('1. First\n2. Second')).toBe(true);
+    expect(guide.includes('1. First\\n2. Second')).toBe(false);
+  });
 });
