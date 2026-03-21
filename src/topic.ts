@@ -4,6 +4,7 @@ import type { BuiltTopic, ConcreteHost, Host, TopicManifest, TopicSection, Topic
 import {
   DEFAULT_TTL_DAYS,
   installedSkillPath,
+  repoRoot,
   resolveHosts,
   topicManifestPath,
   topicPackDir,
@@ -32,6 +33,17 @@ function symlinkForce(target: string, destination: string): void {
     // noop
   }
   fs.symlinkSync(target, destination);
+}
+
+function installWorkspaceCodexSkill(skillName: string, packDir: string): string | undefined {
+  const workspaceSkillsDir = path.join(repoRoot(), '.agents', 'skills');
+  if (!fs.existsSync(workspaceSkillsDir)) {
+    return undefined;
+  }
+
+  const destination = path.join(workspaceSkillsDir, skillName);
+  symlinkForce(packDir, destination);
+  return destination;
 }
 
 export function slugify(input: string): string {
@@ -348,6 +360,10 @@ export async function buildTopicPackFromManifestFile(
       const installPath = installedSkillPath(host, normalized.generatedSkillName);
       symlinkForce(packDir, installPath);
       installedHosts[host] = installPath;
+
+      if (host === 'codex') {
+        installWorkspaceCodexSkill(normalized.generatedSkillName, packDir);
+      }
     }
   }
 

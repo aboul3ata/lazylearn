@@ -5,7 +5,7 @@ import type { ConcreteHost, Host } from './types';
 export const DEFAULT_TTL_DAYS = 7;
 
 export function repoRoot(): string {
-  return path.resolve(import.meta.dir, '..');
+  return process.env.LAZYLEARN_REPO_ROOT || path.resolve(import.meta.dir, '..');
 }
 
 export function lazylearnHome(): string {

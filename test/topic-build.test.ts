@@ -12,17 +12,21 @@ describe('topic build and refresh', () => {
     tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'lazylearn-'));
     previousEnv = {
       LAZYLEARN_HOME: process.env.LAZYLEARN_HOME,
+      LAZYLEARN_REPO_ROOT: process.env.LAZYLEARN_REPO_ROOT,
       LAZYLEARN_CLAUDE_SKILLS_DIR: process.env.LAZYLEARN_CLAUDE_SKILLS_DIR,
       LAZYLEARN_CODEX_SKILLS_DIR: process.env.LAZYLEARN_CODEX_SKILLS_DIR,
     };
 
     process.env.LAZYLEARN_HOME = path.join(tempRoot, '.lazylearn');
+    process.env.LAZYLEARN_REPO_ROOT = tempRoot;
     process.env.LAZYLEARN_CLAUDE_SKILLS_DIR = path.join(tempRoot, '.claude', 'skills');
     process.env.LAZYLEARN_CODEX_SKILLS_DIR = path.join(tempRoot, '.codex', 'skills');
+    fs.mkdirSync(path.join(tempRoot, '.agents', 'skills'), { recursive: true });
   });
 
   afterEach(() => {
     process.env.LAZYLEARN_HOME = previousEnv.LAZYLEARN_HOME;
+    process.env.LAZYLEARN_REPO_ROOT = previousEnv.LAZYLEARN_REPO_ROOT;
     process.env.LAZYLEARN_CLAUDE_SKILLS_DIR = previousEnv.LAZYLEARN_CLAUDE_SKILLS_DIR;
     process.env.LAZYLEARN_CODEX_SKILLS_DIR = previousEnv.LAZYLEARN_CODEX_SKILLS_DIR;
     fs.rmSync(tempRoot, { recursive: true, force: true });
@@ -38,6 +42,7 @@ describe('topic build and refresh', () => {
     expect(fs.lstatSync(result.installedHosts.claude!).isSymbolicLink()).toBe(true);
     expect(fs.lstatSync(result.installedHosts.codex!).isSymbolicLink()).toBe(true);
     expect(fs.existsSync(path.join(result.topicRoot, 'hosts', 'codex', 'lazylearn-seo', 'agents', 'openai.yaml'))).toBe(true);
+    expect(fs.lstatSync(path.join(tempRoot, '.agents', 'skills', 'lazylearn-seo')).isSymbolicLink()).toBe(true);
   });
 
   test('skips stale refresh when topic is still fresh', async () => {
