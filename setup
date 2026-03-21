@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+HOST="claude"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --host)
+      HOST="$2"
+      shift 2
+      ;;
+    --host=*)
+      HOST="${1#--host=}"
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+case "$HOST" in
+  claude|codex|auto) ;;
+  *)
+    echo "Unknown --host value: $HOST" >&2
+    exit 1
+    ;;
+esac
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "bun is required." >&2
+  exit 1
+fi
+
+mkdir -p "$HOME/.lazylearn/runtime/bin" "$HOME/.lazylearn/topics" "$HOME/.lazylearn/work"
+
+(
+  cd "$REPO_DIR"
+  bun install
+  bun run build
+)
+
+cat > "$HOME/.lazylearn/runtime/bin/lazylearn-topic-build" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$REPO_DIR"
+exec bun run scripts/topic-build.ts "\$@"
+EOF
+
+cat > "$HOME/.lazylearn/runtime/bin/lazylearn-topic-refresh" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$REPO_DIR"
+exec bun run scripts/topic-refresh.ts "\$@"
+EOF
+
+chmod +x "$HOME/.lazylearn/runtime/bin/lazylearn-topic-build" "$HOME/.lazylearn/runtime/bin/lazylearn-topic-refresh"
+
+install_claude=0
+install_codex=0
+if [ "$HOST" = "auto" ]; then
+  install_claude=1
+  install_codex=1
+elif [ "$HOST" = "claude" ]; then
+  install_claude=1
+else
+  install_codex=1
+fi
+
+if [ "$install_claude" -eq 1 ]; then
+  mkdir -p "$HOME/.claude/skills"
+  ln -snf "$REPO_DIR" "$HOME/.claude/skills/lazylearn"
+  ln -snf "$REPO_DIR/lazylearn-refresh" "$HOME/.claude/skills/lazylearn-refresh"
+fi
+
+if [ "$install_codex" -eq 1 ]; then
+  mkdir -p "$HOME/.codex/skills"
+  ln -snf "$REPO_DIR/.agents/skills/lazylearn" "$HOME/.codex/skills/lazylearn"
+  ln -snf "$REPO_DIR/.agents/skills/lazylearn-refresh" "$HOME/.codex/skills/lazylearn-refresh"
+fi
+
+echo "lazylearn ready."

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "topic": "SEO",
+  "slug": "seo",
+  "displayName": "SEO",
+  "description": "Search engine optimization playbook for content, technical audits, and on-page improvements.",
+  "instructions": [
+    "Prefer specific recommendations with a reason, expected impact, and validation step.",
+    "Separate technical SEO, content SEO, and internal linking instead of mixing them together.",
+    "When making claims, anchor them to the saved source inventory or clearly mark them as inference."
+  ],
+  "seedSources": [
+    {
+      "title": "SEO operating notes",
+      "kind": "inline",
+      "value": "SEO work starts with intent matching, crawlability, indexability, and internal link structure. Pages that target no clear query rarely earn durable traffic. Audit titles, headings, canonical tags, schema, and orphaned pages before proposing new content."
+    },
+    {
+      "title": "Editorial workflow note",
+      "kind": "inline",
+      "value": "For content refreshes, compare current SERP intent, update the outline, improve examples, add missing subtopics, and tighten internal links from adjacent pages. Measure impact via impressions, rankings, CTR, and conversions."
+    }
+  ],
+  "learnedSources": [
+    {
+      "title": "Search Console workflow",
+      "kind": "inline",
+      "value": "Use Search Console to find high-impression low-CTR pages, queries ranking positions 4-15, and indexing anomalies. Pair it with crawl data to decide whether a URL needs technical fixes, content updates, or better link support."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Core Model",
+      "body": "SEO is a traffic acquisition system built on relevance, accessibility, and trust. Relevance comes from matching search intent. Accessibility comes from crawlability, indexability, and clean site architecture. Trust comes from evidence, expertise, and a page experience that supports the user's task."
+    },
+    {
+      "title": "Audit Sequence",
+      "body": "1. Confirm the target query and intent.\n2. Check whether the page is crawlable, indexable, canonicalized correctly, and internally linked.\n3. Evaluate title, H1, structure, and missing subtopics against the current SERP.\n4. Review CTR, rankings, and conversions.\n5. Recommend the smallest change set that can be validated quickly."
+    },
+    {
+      "title": "Content Refresh Rules",
+      "body": "Refreshes should improve usefulness, not just add keywords. Update outdated facts, improve examples, cover missing decision points, and strengthen internal links from relevant supporting pages."
+    }
+  ],
+  "prompts": {
+    "starter": [
+      "Audit this page for technical SEO and explain the highest-leverage fixes.",
+      "Turn these keyword clusters into a content plan with search intent and internal linking suggestions."
+    ]
+  },
+  "refresh": {
+    "ttlDays": 7
+  }
+}

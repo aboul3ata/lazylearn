@@ -1,0 +1,16 @@
+{
+  "name": "lazylearn",
+  "version": "0.1.0",
+  "description": "Public harness for generating per-user LazyLearn domain skills for Claude and Codex.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "bun run scripts/gen-skill-docs.ts",
+    "gen:skill-docs": "bun run scripts/gen-skill-docs.ts",
+    "skill:check": "bun run scripts/skill-check.ts",
+    "topic:build": "bun run scripts/topic-build.ts",
+    "topic:refresh": "bun run scripts/topic-refresh.ts",
+    "example:seo": "bun run scripts/topic-build.ts --manifest examples/seo/topic.json --install --host auto",
+    "test": "bun test"
+  }
+}

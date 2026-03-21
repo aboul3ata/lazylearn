@@ -1,0 +1,7 @@
+interface:
+  display_name: "LazyLearn"
+  short_description: "Create a reusable domain skill pack."
+  default_prompt: "Use $lazylearn to build a new domain skill from seeded sources."
+
+policy:
+  allow_implicit_invocation: true

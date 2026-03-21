@@ -1,0 +1,7 @@
+interface:
+  display_name: "LazyLearn Refresh"
+  short_description: "Refresh an existing learned topic skill."
+  default_prompt: "Use $lazylearn-refresh to rebuild a previously learned topic skill."
+
+policy:
+  allow_implicit_invocation: true
