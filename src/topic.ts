@@ -42,7 +42,8 @@ function installWorkspaceCodexSkill(skillName: string, packDir: string): string 
   }
 
   const destination = path.join(workspaceSkillsDir, skillName);
-  symlinkForce(packDir, destination);
+  fs.rmSync(destination, { recursive: true, force: true });
+  fs.cpSync(packDir, destination, { recursive: true });
   return destination;
 }
 
